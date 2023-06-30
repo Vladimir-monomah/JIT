@@ -20,7 +20,6 @@ bot = telegram.Bot(token=TOKEN)
 # Создаем объект JIRA-клиента
 jira = JIRA(server=JIRA_SERVER, basic_auth=(JIRA_LOGIN, JIRA_PASSWORD))
 
-
 # Функция для отправки сообщения в телеграм
 async def send_message(text):
     try:
@@ -29,11 +28,12 @@ async def send_message(text):
         print(f'Error sending message: {e}')
 
 
-# Функция для получения задач в статусе "Блокировано"
+# Функция для получения задач с приоритетом "Блокер
 def get_blocked_issues():
-    query = 'status not in (closed, Закрыто, "Ответ получен", "Спецификация обновлена") AND issuetype in (Проблема, ' \
-            'Уточнение) AND ("Ответственный инженер по сопровождению" in (VOBykov) OR assignee in (VOBykov) OR ' \
-            'creator in (VOBykov)) ORDER BY Account DESC'
+    query = 'project in (LKP, FCS) AND issuetype in (Проблема) AND status in ("В ожидании воспроизведения", "На воспроизведении", "В ожидании разработчика", ' \
+            '"На исправлении", "На уточнении", "В ожидании уточнения", Блокировано) AND ("Ответственный инженер по сопровождению" in (VOBykov, v.berezin, ' \
+            'VEremin, BulatovE, yupopova, AMishina, a.karkavin, bondarev) OR assignee in (VOBykov, v.berezin, VEremin, BulatovE, yupopova, ' \
+            'AMishina, a.karkavin, bondarev)) and priority = Blocker'
     issues = jira.search_issues(query)
     return issues
 
@@ -42,7 +42,7 @@ def get_blocked_issues():
 async def send_blocked_issues_notification():
     issues = get_blocked_issues()
     if len(issues) > 0:
-        text = 'Внимание! Есть задачи в статусе "Блокировано":\n'
+        text = 'Внимание! Есть задачи с приоритетом "Блокер":\n'
         for issue in issues:
             text += f'- <a href="https://fk.jira.lanit.ru/browse/{issue.key}">{issue.key}</a>: ' \
                     f'{issue.fields.summary} ({issue.fields.assignee})\n'
@@ -54,11 +54,13 @@ async def main():
     # Основной цикл программы
     while True:
         try:
-            # Проверяем, что текущий день недели - понедельник-пятница и текущее время находится в промежутке между 8:00 и 19:00
-            current_time = datetime.datetime.now().time()
+            # Проверяем, что текущий день недели - понедельник-пятница
             current_day = datetime.datetime.now().weekday()
-            if current_day >= 0 and current_day <= 4 and current_time >= datetime.time(8, 0) and current_time <= datetime.time(19, 0):
-                await send_blocked_issues_notification()
+            if current_day >= 0 and current_day <= 4:
+                # Проверяем, что текущее время - 10:00 или 14:00
+                current_time = datetime.datetime.now().time()
+                if current_time == datetime.time(10, 0) or current_time == datetime.time(14, 0):
+                    await send_blocked_issues_notification()
 
             # Задержка на 30 минут перед следующей итерацией цикла
             await asyncio.sleep(1800)
