@@ -20,6 +20,7 @@ bot = telegram.Bot(token=TOKEN)
 # Создаем объект JIRA-клиента
 jira = JIRA(server=JIRA_SERVER, basic_auth=(JIRA_LOGIN, JIRA_PASSWORD))
 
+
 # Функция для отправки сообщения в телеграм
 async def send_message(text):
     try:
@@ -28,7 +29,7 @@ async def send_message(text):
         print(f'Error sending message: {e}')
 
 
-# Функция для получения задач с приоритетом "Блокер
+# Функция для получения задач в статусе "Блокировано"
 def get_blocked_issues():
     query = 'project in (LKP, FCS) AND issuetype in (Проблема) AND status in ("В ожидании воспроизведения", "На воспроизведении", "В ожидании разработчика", ' \
             '"На исправлении", "На уточнении", "В ожидании уточнения", Блокировано) AND ("Ответственный инженер по сопровождению" in (VOBykov, v.berezin, ' \
@@ -42,7 +43,7 @@ def get_blocked_issues():
 async def send_blocked_issues_notification():
     issues = get_blocked_issues()
     if len(issues) > 0:
-        text = 'Внимание! Есть задачи с приоритетом "Блокер":\n'
+        text = 'Внимание! Есть задачи в статусе "Блокировано":\n'
         for issue in issues:
             text += f'- <a href="https://fk.jira.lanit.ru/browse/{issue.key}">{issue.key}</a>: ' \
                     f'{issue.fields.summary} ({issue.fields.assignee})\n'
@@ -54,18 +55,21 @@ async def main():
     # Основной цикл программы
     while True:
         try:
-            # Проверяем, что текущий день недели - понедельник-пятница
+            # Проверяем, что текущий день недели - понедельник-пятница и текущее время 10 утра и 14 часов дня
+            current_time = datetime.datetime.now().time()
             current_day = datetime.datetime.now().weekday()
-            if current_day >= 0 and current_day <= 4:
-                # Проверяем, что текущее время - 10:00 или 14:00
-                current_time = datetime.datetime.now().time()
-                if current_time == datetime.time(10, 0) or current_time == datetime.time(14, 0):
-                    await send_blocked_issues_notification()
+            if current_time >= datetime.time(10, 0) and current_time <= datetime.time(14, 0):
+                await send_blocked_issues_notification()
 
             # Задержка на 30 минут перед следующей итерацией цикла
             await asyncio.sleep(1800)
         except Exception as e:
             print(e)
+
+
+if __name__ == "__main__":
+    # Запускаем основную функцию
+    asyncio.run(main())
 
 
 if __name__ == "__main__":
