@@ -11,7 +11,7 @@ logging.basicConfig(filename='program.log', level=logging.INFO)
 # Токен вашего телеграм-бота
 TOKEN = '6175353928:AAHplr0s6alYjGowN_5gmNq-uVk7Kdcz_Fg'
 # ID чата, в который будут отправляться сообщения
-CHAT_ID = '343254672'
+CHAT_ID = '-1001696187652'
 # URL JIRA-сервера
 JIRA_SERVER = 'https://fk.jira.lanit.ru/'
 # Логин и пароль для JIRA
