@@ -1,3 +1,4 @@
+import os
 import asyncio
 import datetime
 import logging
@@ -5,18 +6,22 @@ import logging
 import telegram
 from jira import JIRA
 
-# Настройки логирования
-logging.basicConfig(filename='program.log', level=logging.INFO)
-
 # Токен вашего телеграм-бота
 TOKEN = '6175353928:AAHplr0s6alYjGowN_5gmNq-uVk7Kdcz_Fg'
 # ID чата, в который будут отправляться сообщения
-CHAT_ID = '-1001696187652'
+CHAT_ID = '343254672'
 # URL JIRA-сервера
 JIRA_SERVER = 'https://fk.jira.lanit.ru/'
 # Логин и пароль для JIRA
 JIRA_LOGIN = 'VOBykov'
 JIRA_PASSWORD = '14031999KIRvolodya2023'
+
+# Создаем папку для логов с текущим временем и датой
+log_folder = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+os.makedirs(log_folder, exist_ok=True)
+
+# Настройки логирования
+logging.basicConfig(filename=os.path.join(log_folder, 'program.log'), level=logging.INFO)
 
 # Создаем объект телеграм-бота
 bot = telegram.Bot(token=TOKEN)
