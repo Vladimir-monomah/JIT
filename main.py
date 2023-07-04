@@ -29,12 +29,15 @@ async def send_message(text):
         print(f'Error sending message: {e}')
 
 
-# Функция для получения задач в статусе "Блокировано"
+# Функция для получения задач в статусе "В ожидании уточнения"
 def get_blocked_issues():
-    query = 'project in (LKP, FCS) AND issuetype in (Проблема) AND status in ("В ожидании воспроизведения", "На воспроизведении", "В ожидании разработчика", ' \
-            '"На исправлении", "На уточнении", "В ожидании уточнения", Блокировано) AND ("Ответственный инженер по сопровождению" in (VOBykov, v.berezin, ' \
-            'VEremin, BulatovE, yupopova, AMishina, a.karkavin, bondarev) OR assignee in (VOBykov, v.berezin, VEremin, BulatovE, yupopova, ' \
-            'AMishina, a.karkavin, bondarev)) and priority = Blocker'
+    query = 'project in (LKP, FCS) AND status not in (Closed, Resolved, Закрыт, Закрыта, Закрыто, "Спецификация обновлена", "Ответ получен", "Ответ дан") ' \
+            'AND (type = Проблема OR type = Уточнение AND "ZFK (код бюджета)" = ' \
+            'ZFK-4603 AND issueFunction not in linkedIssuesOfAll("type=\'Головная задача тестирования\'") OR issueFunction in linkedIssuesOfAll("type=\'Проблема\'")) ' \
+            'AND component in ("ЛКП ЭА", "РДИК", "Электронное актирование (ЛК 44ФЗ)", "Односторонний отказ", "Односторонний отказ ЛКЗ", "Односторонний отказ ЛКП", "РК") ' \
+            'AND component not in ("Автоматизированное тестирование") ' \
+            'AND assignee in (Belyh, taisheva, PDidenko, mkolpakov, sultasheva, ISobolev, ochernikova, avmishina, Rajabov) ORDER BY assignee ASC, type ASC, ' \
+            '"Багрейтинг проблемы" DESC, priority DESC'
     issues = jira.search_issues(query)
     return issues
 
@@ -43,7 +46,7 @@ def get_blocked_issues():
 async def send_blocked_issues_notification():
     issues = get_blocked_issues()
     if len(issues) > 0:
-        text = 'Внимание! Есть задачи в статусе "Блокировано":\n'
+        text = 'Внимание! Есть задачи в статусе "В ожидании уточнения":\n'
         for issue in issues:
             text += f'- <a href="https://fk.jira.lanit.ru/browse/{issue.key}">{issue.key}</a>: ' \
                     f'{issue.fields.summary} ({issue.fields.assignee})\n'
