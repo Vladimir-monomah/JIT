@@ -9,15 +9,18 @@ from jira import JIRA
 # Токен вашего телеграм-бота
 TOKEN = '6175353928:AAHplr0s6alYjGowN_5gmNq-uVk7Kdcz_Fg'
 # ID чата, в который будут отправляться сообщения
-CHAT_ID = '343254672'
+CHAT_ID = '-1001696187652'
 # URL JIRA-сервера
 JIRA_SERVER = 'https://fk.jira.lanit.ru/'
 # Логин и пароль для JIRA
 JIRA_LOGIN = 'VOBykov'
 JIRA_PASSWORD = '14031999KIRvolodya2023'
 
+# Получите абсолютный путь к папке, в которой находится main.py
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
 # Создаем папку для логов с текущим временем и датой
-log_folder = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+log_folder = os.path.join(current_dir, datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
 os.makedirs(log_folder, exist_ok=True)
 
 # Настройки логирования
@@ -77,6 +80,16 @@ async def main():
             current_time = datetime.datetime.now().time()
             current_day = datetime.datetime.now().weekday()
             if current_time >= datetime.time(10, 0) and current_time <= datetime.time(14, 0):
+                if not is_running:
+                    # Запускаем программу
+                    is_running = True
+                    logger.info("Program started")
+                    await send_blocked_issues_notification()
+                else:
+                    if is_running:
+                        # Останавливаем программу
+                        is_running = False
+                        logger.info("Program stopped")
                 await send_blocked_issues_notification()
 
             # Задержка на 30 минут перед следующей итерацией цикла
