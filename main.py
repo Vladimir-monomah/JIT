@@ -79,23 +79,36 @@ async def main():
             # Проверяем, что текущий день недели - понедельник-пятница и текущее время 10 утра и 14 часов дня
             current_time = datetime.datetime.now().time()
             current_day = datetime.datetime.now().weekday()
-            if current_time >= datetime.time(10, 0) and current_time <= datetime.time(14, 0):
+            # Проверяем, что текущее время находится в заданных временных интервалах
+            if current_day >= 0 and current_day <= 4 and current_time >= datetime.time(10, 0) and current_time <= datetime.time(14, 0):
                 if not is_running:
                     # Запускаем программу
                     is_running = True
                     logger.info("Program started")
                     await send_blocked_issues_notification()
                 else:
-                    if is_running:
-                        # Останавливаем программу
-                        is_running = False
-                        logger.info("Program stopped")
-                await send_blocked_issues_notification()
+                    # Проверяем, выполнилась ли уже задача отправки уведомления
+                    if await is_blocked_issues_notification_sent():
+                        # Задача выполнена, завершаем программу
+                        logger.info("Program completed")
+                        return
+            else:
+                if is_running:
+                    # Останавливаем программу
+                    is_running = False
+                    logger.info("Program stopped")
 
-            # Задержка на 30 минут перед следующей итерацией цикла
-            await asyncio.sleep(1800)
+            # Задержка перед следующей итерацией цикла
+            await asyncio.sleep(60)  # Можно увеличить или уменьшить интервал
+
         except Exception as e:
             logger.error(f'Error in main loop: {e}')
+
+        # Функция для проверки выполнения задачи отправки уведомления
+        async def is_blocked_issues_notification_sent():
+            # Ваша логика проверки выполнения задачи
+            # В этом примере мы просто возвращаем False
+            return False
 
 
 if __name__ == "__main__":
