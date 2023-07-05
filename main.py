@@ -73,6 +73,7 @@ async def send_blocked_issues_notification():
 
 async def main():
     offset = 0
+    is_running = False  # Флаг для отслеживания состояния выполнения программы
     # Основной цикл программы
     while True:
         try:
@@ -99,7 +100,7 @@ async def main():
                     logger.info("Program stopped")
 
             # Задержка перед следующей итерацией цикла
-            await asyncio.sleep(60)  # Можно увеличить или уменьшить интервал
+            await asyncio.sleep(1800)  # Можно увеличить или уменьшить интервал
 
         except Exception as e:
             logger.error(f'Error in main loop: {e}')
