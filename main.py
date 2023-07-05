@@ -105,11 +105,11 @@ async def main():
         except Exception as e:
             logger.error(f'Error in main loop: {e}')
 
-        # Функция для проверки выполнения задачи отправки уведомления
-        async def is_blocked_issues_notification_sent():
-            # Ваша логика проверки выполнения задачи
-            # В этом примере мы просто возвращаем False
-            return False
+# Функция для проверки выполнения задачи отправки уведомления
+async def is_blocked_issues_notification_sent():
+    # Ваша логика проверки выполнения задачи
+    # В этом примере мы просто возвращаем False
+    return False
 
 
 if __name__ == "__main__":
