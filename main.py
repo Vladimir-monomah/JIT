@@ -108,13 +108,14 @@ async def main():
 # Функция для проверки выполнения задачи отправки уведомления
 async def is_blocked_issues_notification_sent():
     # Ваша логика проверки выполнения задачи
-    # В этом примере мы просто возвращаем False
-    return False
+    # В этом примере мы просто возвращаем True, когда уведомление отправлено
+    return True
 
 
 if __name__ == "__main__":
     # Запускаем основную функцию
     try:
-        asyncio.run(main())
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(main())
     except Exception as e:
         logger.error(f'Error in main function: {e}')
