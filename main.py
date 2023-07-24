@@ -14,7 +14,7 @@ CHAT_ID = '-1001696187652'
 JIRA_SERVER = 'https://fk.jira.lanit.ru/'
 # Логин и пароль для JIRA
 JIRA_LOGIN = 'VOBykov'
-JIRA_PASSWORD = '14031999KIRvolodya2023'
+JIRA_PASSWORD = '14031999KIRvolodya2024'
 
 # Получите абсолютный путь к папке, в которой находится main.py
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -81,7 +81,7 @@ async def main():
             current_time = datetime.datetime.now().time()
             current_day = datetime.datetime.now().weekday()
             # Проверяем, что текущее время находится в заданных временных интервалах
-            if current_day >= 0 and current_day <= 4 and current_time >= datetime.time(10, 0) and current_time <= datetime.time(14, 0):
+            if current_day >= 0 and current_day <= 4 and current_time >= datetime.time(10, 0):
                 if not is_running:
                     # Запускаем программу
                     is_running = True
