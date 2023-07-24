@@ -77,11 +77,11 @@ async def main():
     # Основной цикл программы
     while True:
         try:
-            # Проверяем, что текущий день недели - понедельник-пятница и текущее время 10 утра и 14 часов дня
+            # Проверяем, что текущий день недели - понедельник-пятница и текущее время 10 утра
             current_time = datetime.datetime.now().time()
             current_day = datetime.datetime.now().weekday()
             # Проверяем, что текущее время находится в заданных временных интервалах
-            if current_day >= 0 and current_day <= 4 and current_time >= datetime.time(10, 0):
+            if current_day >= 0 and current_day <= 4 and current_time == datetime.time(10, 0):
                 if not is_running:
                     # Запускаем программу
                     is_running = True
