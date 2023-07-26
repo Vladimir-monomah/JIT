@@ -2,7 +2,7 @@ import os
 import asyncio
 import datetime
 import logging
-
+import schedule
 import telegram
 from jira import JIRA
 
@@ -71,39 +71,32 @@ async def send_blocked_issues_notification():
         logger.error(f'Error sending blocked issues notification: {e}')
 
 
+# Функция для запуска программы и отправки уведомлений
+async def run_program():
+    logger.info("Program started")
+    await send_blocked_issues_notification()
+    logger.info("Program completed")
+
+# Функция для проверки и запуска программы по расписанию
+def check_and_run_program():
+    current_time = datetime.datetime.now().time()
+    current_day = datetime.datetime.now().weekday()
+    if current_day >= 0 and current_day <= 4 and current_time >= datetime.time(10, 0):
+        asyncio.run(run_program())
+
+
 async def main():
-    offset = 0
-    is_running = False  # Флаг для отслеживания состояния выполнения программы
+    # Планирование запуска программы в 10:00 каждый будний день
+    schedule.every().monday.to.friday.at("10:00").do(check_and_run_program)
     # Основной цикл программы
     while True:
         try:
-            # Проверяем, что текущий день недели - понедельник-пятница и текущее время 10 утра
-            current_time = datetime.datetime.now().time()
-            current_day = datetime.datetime.now().weekday()
-            # Проверяем, что текущее время находится в заданных временных интервалах
-            if current_day >= 0 and current_day <= 4 and current_time == datetime.time(10, 0):
-                if not is_running:
-                    # Запускаем программу
-                    is_running = True
-                    logger.info("Program started")
-                    await send_blocked_issues_notification()
-                else:
-                    # Проверяем, выполнилась ли уже задача отправки уведомления
-                    if await is_blocked_issues_notification_sent():
-                        # Задача выполнена, завершаем программу
-                        logger.info("Program completed")
-                        return
-            else:
-                if is_running:
-                    # Останавливаем программу
-                    is_running = False
-                    logger.info("Program stopped")
-
-            # Задержка перед следующей итерацией цикла
-            await asyncio.sleep(1800)  # Можно увеличить или уменьшить интервал
-
+            while True:
+                schedule.run_pending()
+                await asyncio.sleep(1)
         except Exception as e:
             logger.error(f'Error in main loop: {e}')
+
 
 # Функция для проверки выполнения задачи отправки уведомления
 async def is_blocked_issues_notification_sent():
