@@ -78,11 +78,11 @@ async def run_program():
     logger.info("Program completed")
 
 # Функция для проверки и запуска программы по расписанию
-def check_and_run_program():
+async def check_and_run_program():
     current_time = datetime.datetime.now().time()
     current_day = datetime.datetime.now().weekday()
     if current_day >= 0 and current_day <= 4 and current_time >= datetime.time(10, 0):
-        asyncio.run(run_program())
+        await run_program()
 
 
 async def main():
