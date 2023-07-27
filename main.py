@@ -87,7 +87,7 @@ def check_and_run_program():
 
 async def main():
     # Планирование запуска программы в 10:00 каждый будний день
-    schedule.every().monday.to.friday.at("10:00").do(check_and_run_program)
+    schedule.every().monday.to(4).at("10:00").do(check_and_run_program)
     # Основной цикл программы
     while True:
         try:
