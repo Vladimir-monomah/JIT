@@ -24,7 +24,7 @@ log_folder = os.path.join(current_dir, datetime.datetime.now().strftime("%Y-%m-%
 os.makedirs(log_folder, exist_ok=True)
 
 # Настройки логирования
-logging.basicConfig(filename=os.path.join(log_folder, 'program.log'), level=logging.INFO)
+logging.basicConfig(filename=os.path.join(log_folder, 'program.log'), filemode='w', level=logging.INFO)
 
 # Создаем объект телеграм-бота
 bot = telegram.Bot(token=TOKEN)
