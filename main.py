@@ -2,7 +2,7 @@ import os
 import asyncio
 import datetime
 import logging
-import schedule
+
 import telegram
 from jira import JIRA
 
@@ -24,7 +24,7 @@ log_folder = os.path.join(current_dir, datetime.datetime.now().strftime("%Y-%m-%
 os.makedirs(log_folder, exist_ok=True)
 
 # Настройки логирования
-logging.basicConfig(filename=os.path.join(log_folder, 'program.log'), filemode='w', level=logging.INFO)
+logging.basicConfig(filename=os.path.join(log_folder, 'program.log'), level=logging.INFO)
 
 # Создаем объект телеграм-бота
 bot = telegram.Bot(token=TOKEN)
@@ -71,38 +71,31 @@ async def send_blocked_issues_notification():
         logger.error(f'Error sending blocked issues notification: {e}')
 
 
-# Функция для запуска программы и отправки уведомлений
-async def run_program():
-    logger.info("Program started")
-    await send_blocked_issues_notification()
-    logger.info("Program completed")
-
-# Функция для проверки и запуска программы по расписанию
-async def check_and_run_program():
-    current_time = datetime.datetime.now().time()
-    current_day = datetime.datetime.now().weekday()
-    if current_day >= 0 and current_day <= 4 and current_time >= datetime.time(10, 0):
-        await run_program()
-
-
 async def main():
-    # Планирование запуска программы в 10:00 каждый будний день
-    schedule.every().monday.to(4).at("10:00").do(check_and_run_program)
-    # Основной цикл программы
+    is_sent = False  # Флаг для определения, отправили мы или нет
     while True:
         try:
-            while True:
-                schedule.run_pending()
-                await asyncio.sleep(1)
+            # Проверяем, что текущий день недели - понедельник-пятница и текущее время 10 утра
+            current_time = datetime.datetime.now().time()
+            current_time = datetime.time(current_time.hour, current_time.minute)
+            current_day = datetime.datetime.now().weekday()
+            sending_time = datetime.time(10, 0)  # Время отправки сообщения
+            # Проверяем, что текущее время находится в заданных временных интервалах
+            if 0 <= current_day <= 4 and current_time == sending_time and not is_sent:
+                # Запускаем программу
+                is_sent = True
+                logger.info("Program started")
+                await send_blocked_issues_notification()
+
+            if 0 <= current_day <= 4 and current_time > sending_time:
+                is_sent = False
+
+            # Задержка перед следующей итерацией цикла
+            await asyncio.sleep(10)  # Можно увеличить или уменьшить интервал
+
         except Exception as e:
             logger.error(f'Error in main loop: {e}')
 
-
-# Функция для проверки выполнения задачи отправки уведомления
-async def is_blocked_issues_notification_sent():
-    # Ваша логика проверки выполнения задачи
-    # В этом примере мы просто возвращаем True, когда уведомление отправлено
-    return True
 
 
 if __name__ == "__main__":
