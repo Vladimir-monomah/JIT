@@ -67,6 +67,8 @@ async def send_blocked_issues_notification():
                 text += f'- <a href="https://fk.jira.lanit.ru/browse/{issue.key}">{issue.key}</a>: ' \
                         f'{issue.fields.summary} ({issue.fields.assignee})\n'
             await send_message(text)
+        else:
+            await send_message("Поздравляем! Вы победили очередь по уточнениям на аналитике. Ура!")
     except Exception as e:
         logger.error(f'Error sending blocked issues notification: {e}')
 
