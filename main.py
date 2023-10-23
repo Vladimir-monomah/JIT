@@ -14,7 +14,7 @@ CHAT_ID = '-1001696187652'
 JIRA_SERVER = 'https://fk.jira.lanit.ru/'
 # Логин и пароль для JIRA
 JIRA_LOGIN = 'VOBykov'
-JIRA_PASSWORD = '14031999KIRvolodya2024'
+JIRA_PASSWORD = 'Zk0*vPh#466r2(c('
 
 # Получите абсолютный путь к папке, в которой находится main.py
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -49,9 +49,9 @@ def get_blocked_issues():
     query = 'project in (LKP, FCS) AND status not in (Closed, Resolved, Закрыт, Закрыта, Закрыто, "Спецификация обновлена", "Ответ получен", "Ответ дан") ' \
             'AND (type = Проблема OR type = Уточнение AND "ZFK (код бюджета)" = ' \
             'ZFK-4603 AND issueFunction not in linkedIssuesOfAll("type=\'Головная задача тестирования\'") OR issueFunction in linkedIssuesOfAll("type=\'Проблема\'")) ' \
-            'AND component in ("ЛКП ЭА", "РДИК", "Электронное актирование (ЛК 44ФЗ)", "Односторонний отказ", "Односторонний отказ ЛКЗ", "Односторонний отказ ЛКП", "РК") ' \
+            'AND component in (ЕРУЗ,"ЛКП ЭА", РДИК, "Электронное актирование (ЛК 44ФЗ)", "Односторонний отказ", "Односторонний отказ ЛКЗ", "Односторонний отказ ЛКП", РК) ' \
             'AND component not in ("Автоматизированное тестирование") ' \
-            'AND assignee in  (Belyh, taisheva, PDidenko, mkolpakov, sultasheva, ISobolev, ochernikova, avmishina, ovcharenko) ORDER BY assignee ASC, type ASC, ' \
+            'AND assignee in  (Belyh, taisheva, PDidenko, mkolpakov, sultasheva, ISobolev, ochernikova, avmishina, ovcharenko, Levkov) ORDER BY assignee ASC, type ASC, ' \
             '"Багрейтинг проблемы" DESC, priority DESC'
     issues = jira.search_issues(query)
     return issues
