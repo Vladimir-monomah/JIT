@@ -51,7 +51,7 @@ def get_blocked_issues():
             'ZFK-4603 AND issueFunction not in linkedIssuesOfAll("type=\'Головная задача тестирования\'") OR issueFunction in linkedIssuesOfAll("type=\'Проблема\'")) ' \
             'AND component in (ЕРУЗ,"ЛКП ЭА", РДИК, "Электронное актирование (ЛК 44ФЗ)", "Односторонний отказ", "Односторонний отказ ЛКЗ", "Односторонний отказ ЛКП", РК) ' \
             'AND component not in ("Автоматизированное тестирование") ' \
-            'AND assignee in  (Belyh, taisheva, PDidenko, mkolpakov, sultasheva, ISobolev, ochernikova, avmishina, ovcharenko, Levkov) ORDER BY assignee ASC, type ASC, ' \
+            'AND assignee in  (taisheva, PDidenko, sultasheva, ISobolev, ochernikova, ovcharenko, Levkov) ORDER BY assignee ASC, type ASC, ' \
             '"Багрейтинг проблемы" DESC, priority DESC'
     issues = jira.search_issues(query)
     return issues
