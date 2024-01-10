@@ -47,8 +47,8 @@ async def send_message(text):
 # Функция для получения задач в статусе "В ожидании уточнения"
 def get_blocked_issues():
     query = 'project in (LKP, FCS) AND status not in (Closed, Resolved, Закрыт, Закрыта, Закрыто, "Спецификация обновлена", "Ответ получен", "Ответ дан") ' \
-            'AND (type = Проблема OR type = Уточнение AND "ZFK (код бюджета)" = ' \
-            'ZFK-5387 AND issueFunction not in linkedIssuesOfAll("type=\'Головная задача тестирования\'") OR issueFunction in linkedIssuesOfAll("type=\'Проблема\'")) ' \
+            'AND (type = Проблема OR type = Уточнение AND "ZFK (код бюджета)" in ' \
+            '(ZFK-4603,ZFK-5387) AND issueFunction not in linkedIssuesOfAll("type=\'Головная задача тестирования\'") OR issueFunction in linkedIssuesOfAll("type=\'Проблема\'")) ' \
             'AND component in (ЕРУЗ,"ЛКП ЭА", РДИК, "Электронное актирование (ЛК 44ФЗ)", "Односторонний отказ", "Односторонний отказ ЛКЗ", "Односторонний отказ ЛКП", РК) ' \
             'AND component not in ("Автоматизированное тестирование") ' \
             'AND assignee in  (taisheva, PDidenko, sultasheva, ochernikova, ovcharenko, Levkov) ORDER BY assignee ASC, type ASC, ' \
