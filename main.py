@@ -49,7 +49,7 @@ def get_blocked_issues():
     query = 'project in (LKP, FCS) AND status not in (Closed, Resolved, Закрыт, Закрыта, Закрыто, "Спецификация обновлена", "Ответ получен", "Ответ дан") ' \
             'AND (type = Проблема OR type = Уточнение AND "ZFK (код бюджета)" in ' \
             '(ZFK-4603,ZFK-5387) AND issueFunction not in linkedIssuesOfAll("type=\'Головная задача тестирования\'") OR issueFunction in linkedIssuesOfAll("type=\'Проблема\'")) ' \
-            'AND component in (ЕРУЗ,"ЛКП ЭА", РДИК, "Электронное актирование (ЛК 44ФЗ)", "Односторонний отказ", "Односторонний отказ ЛКЗ", "Односторонний отказ ЛКП", РК) ' \
+            'AND component in (ЕРУЗ,"ЛКП ЭА", РДИК, "Электронное актирование (ЛК 44ФЗ)", "Односторонний отказ", "Односторонний отказ ЛКЗ", "Односторонний отказ ЛКП", РК, "ЛКП ППА") ' \
             'AND component not in ("Автоматизированное тестирование") ' \
             'AND assignee in  (taisheva, PDidenko, sultasheva, ochernikova, ovcharenko, Levkov) ORDER BY assignee ASC, type ASC, ' \
             '"Багрейтинг проблемы" DESC, priority DESC'
