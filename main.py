@@ -14,7 +14,7 @@ CHAT_ID = '-1001696187652'
 JIRA_SERVER = 'https://fk.jira.lanit.ru/'
 # Логин и пароль для JIRA
 JIRA_LOGIN = 'VOBykov'
-JIRA_PASSWORD = 'Zk0*vPh#466r2(c'
+JIRA_PASSWORD = 'Zk0*vPh#466r2('
 
 # Получите абсолютный путь к папке, в которой находится main.py
 current_dir = os.path.dirname(os.path.abspath(__file__))
