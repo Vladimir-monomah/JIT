@@ -14,7 +14,7 @@ CHAT_ID = '-1001696187652'
 JIRA_SERVER = 'https://fk.jira.lanit.ru/'
 # Логин и пароль для JIRA
 JIRA_LOGIN = 'VOBykov'
-JIRA_PASSWORD = 'Zk0*vPh#466r2('
+JIRA_PASSWORD = 'Zk0*vPh#466r2'
 
 # Получите абсолютный путь к папке, в которой находится main.py
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -46,7 +46,7 @@ async def send_message(text):
 
 # Функция для получения задач в статусе "В ожидании уточнения"
 def get_blocked_issues():
-    query = 'project in (LKP, FCS) AND status not in (Closed, Resolved, Закрыт, Закрыта, Закрыто, "Спецификация обновлена", "Ответ получен", "Ответ дан") ' \
+    query = 'project in (LKP, FCS) AND status not in (Closed, Resolved, Закрыт, Закрыта, Закрыто, "Спецификация обновлена", "Ответ получен", "Ответ дан", Выполнено) ' \
             'AND (type = Проблема OR type = Уточнение AND "ZFK (код бюджета)" in ' \
             '(ZFK-4603,ZFK-5387) AND issueFunction not in linkedIssuesOfAll("type=\'Головная задача тестирования\'") OR issueFunction in linkedIssuesOfAll("type=\'Проблема\'")) ' \
             'AND component in (ЕРУЗ,"ЛКП ЭА", РДИК, "Электронное актирование (ЛК 44ФЗ)", "Односторонний отказ", "Односторонний отказ ЛКЗ", "Односторонний отказ ЛКП", РК, "ЛКП ППА",РПГЗ, ПМД, "ЛКП ППА", РПГЗ, РОКО, РЭЖ, ОПМ, "РЖ (РКО)", "РВП (РКО)", "РПП (РКО)", "РРК (РКО)", "РНП (РКО)") ' \
