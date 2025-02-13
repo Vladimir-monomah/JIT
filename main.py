@@ -48,7 +48,7 @@ async def send_message(text):
 def get_blocked_issues():
     query = 'project in (LKP, FCS) AND status not in (Closed, Resolved, Закрыт, Закрыта, Закрыто, "Спецификация обновлена", "Ответ получен", "Ответ дан", Выполнено) ' \
             'AND (type = Проблема OR type = Уточнение AND "ZFK (код бюджета)" in ' \
-            '(ZFK-4603, ZFK-5387, ZFK-6211) AND issueFunction not in linkedIssuesOfAll("type=\'Головная задача тестирования\'") OR issueFunction in linkedIssuesOfAll("type=\'Проблема\'")) ' \
+            '(ZFK-4603, ZFK-5387, ZFK-6211, ZFK-6215) AND issueFunction not in linkedIssuesOfAll("type=\'Головная задача тестирования\'") OR issueFunction in linkedIssuesOfAll("type=\'Проблема\'")) ' \
             'AND component in (ЕРУЗ,"ЛКП ЭА", РДИК, "Электронное актирование (ЛК 44ФЗ)", "Односторонний отказ", "Односторонний отказ ЛКЗ", "Односторонний отказ ЛКП", РК, "ЛКП ППА","ЛКП ЕЛС",РПГЗ, ПМД, "ЛКП ППА", РПГЗ, РОКО, РЭЖ, ОПМ, "РЖ (РКО)", "РВП (РКО)", "РПП (РКО)", "РРК (РКО)", "РНП (РКО)") ' \
             'AND component not in ("Автоматизированное тестирование") ' \
             'AND assignee in  (taisheva, PDidenko, sultasheva, ochernikova, ovcharenko, Levkov,aserikov, Serebrennikova, ILShapovalov, NKostina, ilyasova,TMikhaylova) ORDER BY assignee ASC, type ASC, ' \
